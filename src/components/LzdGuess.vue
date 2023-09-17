@@ -26,7 +26,7 @@ const getHomeGoodsGuessLikeData = async () => {
   const res = await getHomeGoodsGuessLikeAPI(pageParams)
   // 数组追加
   guessList.value.push(...res.result.items)
-  if (pageParams.page < res.result.pages - 30) {
+  if (pageParams.page < res.result.pages) {
     // 页码累加
     pageParams.page++
   } else {

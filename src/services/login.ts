@@ -26,7 +26,7 @@ export const postLoginWxMinAPI = (data: LoginWxMinParams) => {
 export const postLoginWxMinSimpleAPI = (phoneNumber: string) => {
   return http<LoginResult>({
     method: 'POST',
-    url: '/login/wxMin/simple1',
+    url: '/login/wxMin/simple',
     data: {
       phoneNumber,
     },
