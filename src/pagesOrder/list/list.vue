@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import OrderList from './components/OrderList.vue'
+import { ALL_ORDER_TYPEDS } from '@/utils/consts'
 
 // 获取页面参数
 const query = defineProps<{
@@ -8,13 +9,7 @@ const query = defineProps<{
 }>()
 
 // tabs 数据
-const orderTabs = ref([
-  { orderState: 0, title: '全部', isRender: false },
-  { orderState: 1, title: '待付款', isRender: false },
-  { orderState: 2, title: '待发货', isRender: false },
-  { orderState: 3, title: '待收货', isRender: false },
-  { orderState: 4, title: '待评价', isRender: false },
-])
+const orderTabs = ref(ALL_ORDER_TYPEDS)
 
 // 高亮下标
 const activeIndex = ref(orderTabs.value.findIndex((v) => v.orderState === Number(query.type)))

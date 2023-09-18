@@ -14,6 +14,7 @@ const pageParams: Required<PageParams> = {
 const guessList = ref<GuessItem[]>([])
 // 已结束标记
 const finish = ref(false)
+const running = ref(false)
 // 获取猜你喜欢数据
 const getHomeGoodsGuessLikeData = async () => {
   // 退出判断
@@ -22,6 +23,9 @@ const getHomeGoodsGuessLikeData = async () => {
       icon: 'none',
       title: '没有更多数据～',
     })
+  }
+  if (running.value) {
+    return
   }
   const res = await getHomeGoodsGuessLikeAPI(pageParams)
   // 数组追加
@@ -56,7 +60,9 @@ defineExpose({
 <template>
   <!-- 猜你喜欢 -->
   <view class="caption">
+    <i class="iconfont icon-xihuan"></i>
     <text class="text">猜你喜欢</text>
+    <i class="iconfont icon-xihuan"></i>
   </view>
   <view class="guess">
     <navigator
@@ -88,21 +94,14 @@ defineExpose({
   padding: 36rpx 0 40rpx;
   font-size: 32rpx;
   color: #262626;
+  .icon-xihuan {
+    color: #f99144;
+  }
   .text {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 28rpx 0 30rpx;
-
-    &::before,
-    &::after {
-      content: '';
-      width: 20rpx;
-      height: 20rpx;
-      background-image: url(@/static/images/bubble.png);
-      background-size: contain;
-      margin: 0 10rpx;
-    }
+    padding: 0 20rpx 0 20rpx;
   }
 }
 

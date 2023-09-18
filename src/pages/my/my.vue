@@ -1,26 +1,36 @@
 <script setup lang="ts">
 import { useGuessList } from '@/composables'
 import { useMemberStore } from '@/stores'
+import { ORDER_TYPEDS } from '@/utils/consts'
+import { ref } from 'vue'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
-// 订单选项
-const orderTypes = [
-  { type: '1', text: '待付款', icon: 'icon-currency' },
-  { type: '2', text: '待发货', icon: 'icon-gift' },
-  { type: '3', text: '待收货', icon: 'icon-check' },
-  { type: '4', text: '待评价', icon: 'icon-comment' },
-]
 
 // 获取会员信息
 const memberStore = useMemberStore()
 
 // 猜你喜欢组合式函数调用
 const { guessRef, onScrolltolower } = useGuessList()
+
+const refreshEnabled = ref(false)
 </script>
 
 <template>
-  <scroll-view @scrolltolower="onScrolltolower" class="viewport" scroll-y>
+  <scroll-view
+    scroll-y
+    class="viewport"
+    enable-back-to-top
+    :enable-flex="true"
+    :refresher-triggered="refreshEnabled"
+    @scrolltolower="onScrolltolower"
+  >
+    <!-- scroll-y
+    class="viewport"
+    enable-back-to-top
+    :enable-flex="true"
+    :refresher-triggered="refreshEnabled"
+    @scrolltolower="onScrolltolower" -->
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets!.top + 'px' }">
       <!-- 情况1：已登录 -->
@@ -73,17 +83,19 @@ const { guessRef, onScrolltolower } = useGuessList()
       <view class="section">
         <!-- 订单 -->
         <navigator
-          v-for="item in orderTypes"
+          v-for="item in ORDER_TYPEDS"
           :key="item.type"
-          :class="item.icon"
           :url="`/pagesOrder/list/list?type=${item.type}`"
-          class="navigator"
-          hover-class="none"
+          class="contact"
         >
+          <i class="iconfont" :class="item.icon"></i>
           {{ item.text }}
         </navigator>
         <!-- 客服 -->
-        <button class="contact icon-handset" open-type="contact">售后</button>
+        <button class="contact" open-type="contact">
+          <i class="iconfont icon-shouhoukefu"></i>
+          售后
+        </button>
       </view>
     </view>
 
@@ -205,26 +217,19 @@ page {
     display: flex;
     justify-content: space-between;
     padding: 40rpx 20rpx 10rpx;
-    .navigator,
-    .contact {
-      text-align: center;
-      font-size: 24rpx;
-      color: #333;
-      &::before {
-        display: block;
-        font-size: 60rpx;
-        color: #ff9545;
-      }
-      &::after {
-        border: none;
-      }
-    }
     .contact {
       padding: 0;
       margin: 0;
       border: 0;
+      text-align: center;
+      font-size: 24rpx;
+      color: #333;
       background-color: transparent;
       line-height: inherit;
+      .iconfont {
+        font-size: 60rpx;
+        color: #f99144;
+      }
     }
   }
 }
