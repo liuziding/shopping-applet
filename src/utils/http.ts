@@ -39,14 +39,20 @@ interface Data<T> {
 export const http = <T>(options: UniApp.RequestOptions) => {
   // 1. 返回 Promise 对象
   return new Promise<Data<T>>((resolve, reject) => {
+    uni.showLoading({
+      title: '加载中',
+      mask: true,
+    })
     uni.request({
       ...options,
       // 2. 请求成功
       success(res) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
+          uni.hideLoading()
           // 2.1 提取核心数据 res.data
           resolve(res.data as Data<T>)
         } else if (res.statusCode === 401) {
+          uni.hideLoading()
           // 401错误 -> 清理用户信息，跳转到登录页
           const memberStore = useMemberStore()
           memberStore.clearProfile()

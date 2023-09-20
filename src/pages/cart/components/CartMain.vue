@@ -138,11 +138,12 @@ const { guessRef, onScrolltolower } = useGuessList()
             <!-- 商品信息 -->
             <view class="goods">
               <!-- 选中状态 -->
-              <text
-                @tap="onChangeSelected(item)"
-                class="checkbox"
-                :class="{ checked: item.selected }"
-              ></text>
+              <view @tap="onChangeSelected(item)" class="checkbox">
+                <i
+                  class="iconfont"
+                  :class="[item.selected ? 'icon-xuanzhong' : 'icon-weixuanzhongyuanquan']"
+                />
+              </view>
               <navigator
                 :url="`/pages/goods/goods?id=${item.id}`"
                 hover-class="none"
@@ -272,23 +273,17 @@ const { guessRef, onScrolltolower } = useGuessList()
       position: absolute;
       top: 0;
       left: 0;
-
       display: flex;
       align-items: center;
       justify-content: center;
       width: 80rpx;
       height: 100%;
-
-      &::before {
-        content: '\e6cd';
-        font-family: 'erabbit' !important;
-        font-size: 40rpx;
-        color: #444;
+      .icon-xuanzhong {
+        font-size: 38rpx;
+        color: #26bb9b;
       }
-
-      &.checked::before {
-        content: '\e6cc';
-        color: #27ba9b;
+      .icon-weixuanzhongyuanquan {
+        font-size: 45rpx;
       }
     }
 

@@ -12,29 +12,32 @@ const pageParams: Required<PageParams> = {
 
 // 获取猜你喜欢数据
 const guessList = ref<GuessItem[]>([])
-// 已结束标记
-const finish = ref(false)
-const running = ref(false)
+// 是否分页结束
+const isFinish = ref(false)
+// 是否加载中标记，用于防止滚动触底触发多次请求
+const isLoading = ref(false)
 // 获取猜你喜欢数据
 const getHomeGoodsGuessLikeData = async () => {
+  // 如果数据出于加载中，退出函数
+  if (isLoading.value) return
   // 退出判断
-  if (finish.value === true) {
-    return uni.showToast({
-      icon: 'none',
-      title: '没有更多数据～',
-    })
+  if (isFinish.value === true) {
+    return uni.showToast({ icon: 'none', title: '没有更多数据～' })
   }
-  if (running.value) {
-    return
-  }
+  // 发送请求前，标记为加载中
+  isLoading.value = true
+  // 发送请求
   const res = await getHomeGoodsGuessLikeAPI(pageParams)
+  // 发送请求后，重置标记
+  isLoading.value = false
   // 数组追加
   guessList.value.push(...res.result.items)
   if (pageParams.page < res.result.pages) {
     // 页码累加
     pageParams.page++
   } else {
-    finish.value = true
+    // 分页已结束
+    isFinish.value = true
   }
 }
 
@@ -42,7 +45,7 @@ const getHomeGoodsGuessLikeData = async () => {
 const resetData = () => {
   pageParams.page = 1
   guessList.value = []
-  finish.value = false
+  isFinish.value = false
 }
 
 // 组件挂载完毕
@@ -79,7 +82,7 @@ defineExpose({
       </view>
     </navigator>
   </view>
-  <view class="loading-text">{{ finish ? '到底了～' : '正在加载...' }}</view>
+  <view class="loading-text">{{ isFinish ? '到底了～' : '正在加载...' }}</view>
 </template>
 
 <style lang="scss">
@@ -101,7 +104,7 @@ defineExpose({
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 20rpx 0 20rpx;
+    padding: 0 16rpx 0 16rpx;
   }
 }
 

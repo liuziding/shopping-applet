@@ -20,7 +20,7 @@ const props = defineProps<{
 // 请求参数
 const queryParams: Required<OrderListParams> = {
   page: 1,
-  pageSize: 5,
+  pageSize: 10,
   orderState: props.orderState,
 }
 

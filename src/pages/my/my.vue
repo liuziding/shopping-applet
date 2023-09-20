@@ -12,25 +12,10 @@ const memberStore = useMemberStore()
 
 // 猜你喜欢组合式函数调用
 const { guessRef, onScrolltolower } = useGuessList()
-
-const refreshEnabled = ref(false)
 </script>
 
 <template>
-  <scroll-view
-    scroll-y
-    class="viewport"
-    enable-back-to-top
-    :enable-flex="true"
-    :refresher-triggered="refreshEnabled"
-    @scrolltolower="onScrolltolower"
-  >
-    <!-- scroll-y
-    class="viewport"
-    enable-back-to-top
-    :enable-flex="true"
-    :refresher-triggered="refreshEnabled"
-    @scrolltolower="onScrolltolower" -->
+  <scroll-view scroll-y class="viewport" enable-back-to-top @scrolltolower="onScrolltolower">
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets!.top + 'px' }">
       <!-- 情况1：已登录 -->
